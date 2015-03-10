@@ -1,0 +1,29 @@
+R > world.gdp<-read.table("GDP_history.txt",header=TRUE,sep="")
+R > world.gdp
+   Year Europe America Africa Asia
+1     0     18       2      8   73
+2  1000     14       4     11   71
+3  1500     25       3      8   64
+4  1700     30       2      7   61
+5  1820     33       4      5   59
+6  1870     46      12      4   39
+7  1913     47      24      3   26
+8  1950     39      36      4   21
+9  1970     40      32      4   24
+10 1990     34      33      4   29
+11 2012     25      29      4   42
+R > world.gdp.cum<-apply(world.gdp[,-1],1,cumsum)
+R > world.gdp.cum
+        [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11]
+Europe    18   14   25   30   33   46   47   39   40    34    25
+America   20   18   28   32   37   58   71   75   72    67    54
+Africa    28   29   36   39   42   62   74   79   76    71    58
+Asia     101  100  100  100  101  101  100  100  100   100   100
+R > quartz(dpi=72)
+R > plot(world.gdp$Year,world.gdp.cum[1,],type="l",ylim=c(0,100),xlim=c(1700,2012),xlab="",ylab="",xaxt="n")
+R > lines(world.gdp$Year,world.gdp.cum[2,],col=2)
+R > lines(world.gdp$Year,world.gdp.cum[3,],col=3)
+R > lines(world.gdp$Year,world.gdp.cum[4,],col=4)
+R > axis(side=1,at=c(1700,1820,1870,1913,1950,1970,1990,2012),labels=paste(c(1700,1820,1870,1913,1950,1970,1990,2012)))
+R > text(x=rep(1950,4),y=c(20,60,75,90),labels=c("유럽","미 대륙","아프리카","아시아"))
+R > title(main="글로벌 생산의 지역별 비중(1700~2012)",xlab="연도",ylab="비중(%)")
