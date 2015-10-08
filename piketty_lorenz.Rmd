@@ -1,0 +1,51 @@
+---
+title: "Lorenz Curve with Piketty Data"
+author: "coop711"
+date: "2015년 4월 24일"
+output: html_document
+---
+
+과제에 저장되어 있는  `piketty_gini.rda` 파일을 불러들여 각 객체들을 살펴보고, 아래 코드를 참고하여 lorenz curve들을 작성하시오. 의미 이해는 필수!
+
+- 작업 파일 불러들이기.
+
+```{r}
+load("piketty_gini.rda")
+```
+
+- lorenz curve 그리는 함수 살펴보기. 각 코드의 내용을 이해할 것.
+
+```{r}
+lorenz
+```
+
+```{r fig.width=8, fig.height=8}
+x<-piketty.labor
+lorenz(x[,1],cumsum(x[,2]))
+lines(x[,1],cumsum(x[,3]),col="blue")
+lines(x[,1],cumsum(x[,4]),col="red")
+lines(x[,1],cumsum(x[,5]),col="grey")
+title(main="Lorenz Curve for Labor Income",xlab="Cumulative share of people from lowest to highest",ylab="Cumulative share of income earned")
+legend(x=0.05,y=0.95,legend=c("Low","Medium","High","Very High"),lty=1,col=c("black","blue","red","grey"),title="Income Inequality")
+```
+
+```{r fig.width=8, fig.height=8}
+x<-piketty.co
+lorenz(x[,1],cumsum(x[,2]))
+lines(x[,1],cumsum(x[,3]),col="blue")
+lines(x[,1],cumsum(x[,4]),col="red")
+lines(x[,1],cumsum(x[,5]),col="grey")
+lines(x[,1],cumsum(x[,6]),col="green")
+title(main="Lorenz Curve for Capital Ownership",xlab="Cumulative share of people from lowest to highest",ylab="Cumulative share of capital owned")
+legend(x=0.05,y=0.95,legend=c("Low","Medium","Medium HIgh","High","Very High"),lty=1,col=c("black","blue","red","grey","green"),title="Capital Inequality")
+```
+
+```{r fig.width=8, fig.height=8}
+x<-piketty.total
+lorenz(x[,1],cumsum(x[,2]))
+lines(x[,1],cumsum(x[,3]),col="blue")
+lines(x[,1],cumsum(x[,4]),col="red")
+lines(x[,1],cumsum(x[,5]),col="grey")
+title(main="Lorenz Curve for Total Income",xlab="Cumulative share of people from lowest to highest",ylab="Cumulative share of income earned")
+legend(x=0.05,y=0.95,legend=c("Low","Medium","High","Very High"),lty=1,col=c("black","blue","red","grey"),title="Income Inequality")
+```

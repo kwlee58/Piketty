@@ -1,0 +1,65 @@
+---
+title: "Lorenz Curve and Gini Coefficient with Piketty Data"
+author: "coop711"
+date: "2015년 4월 24일"
+output: html_document
+---
+
+Data Description
+----------------
+
+Thomas Piketty가 쓴 **21세기 자본**에는 자본과 소득의 불평등에 대한 다양한 자료가 등장한다. 특히 점유율(share)이라는 관점에서 수집한 자료들이 매우 흥미를 자아낸다. 이 자료들은 [Thomas Piketty - Capital in the 21st century]http://piketty.pse.ens.fr/en/capital21c2 에서 다운로드받을 수 있다. 이 자료 중에서 불평등과 관련 부분을 가공하여 R에서 쉽게 사용할 수 있도록 하였다.
+
+작업 파일에는 데이터 뿐 아니라 간단한 구조로 lorenz curve를 그리고, gini계수를 계산하는 함수가 저장되어 있다.
+먼저 자료부터 확인하자. 
+
+```{r}
+load("piketty_gini.rda")
+ls()
+```
+
+- lorenz curve 그리는 함수 살펴보기. 각 코드의 내용을 이해할 것.
+
+```{r}
+lorenz
+```
+
+- gini 계수 계산하는 함수 살펴보기. 각 코드의 내용을 이해할 것.
+
+```{r}
+gini
+```
+
+```{r fig.width=8, fig.height=8}
+x<-piketty.labor
+lorenz(x[,1],cumsum(x[,2]))
+lines(x[,1],cumsum(x[,3]),col="blue")
+lines(x[,1],cumsum(x[,4]),col="red")
+lines(x[,1],cumsum(x[,5]),col="grey")
+title(main="Lorenz Curve for Labor Income",xlab="Cumulative share of people from lowest to highest",ylab="Cumulative share of income earned")
+legend(x=0.05,y=0.95,legend=c("Low","Medium","High","Very High"),lty=1,col=c("black","blue","red","grey"),title="Income Inequality")
+apply(apply(piketty.labor[,2:5],2,cumsum),2,gini,x=piketty.labor[,1])
+```
+
+```{r fig.width=8, fig.height=8}
+x<-piketty.co
+lorenz(x[,1],cumsum(x[,2]))
+lines(x[,1],cumsum(x[,3]),col="blue")
+lines(x[,1],cumsum(x[,4]),col="red")
+lines(x[,1],cumsum(x[,5]),col="grey")
+lines(x[,1],cumsum(x[,6]),col="green")
+title(main="Lorenz Curve for Capital Ownership",xlab="Cumulative share of people from lowest to highest",ylab="Cumulative share of capital owned")
+legend(x=0.05,y=0.95,legend=c("Low","Medium","Medium HIgh","High","Very High"),lty=1,col=c("black","blue","red","grey","green"),title="Capital Inequality")
+apply(apply(piketty.co[,2:6],2,cumsum),2,gini,x=piketty.co[,1])
+```
+
+```{r fig.width=8, fig.height=8}
+x<-piketty.total
+lorenz(x[,1],cumsum(x[,2]))
+lines(x[,1],cumsum(x[,3]),col="blue")
+lines(x[,1],cumsum(x[,4]),col="red")
+lines(x[,1],cumsum(x[,5]),col="grey")
+title(main="Lorenz Curve for Total Income",xlab="Cumulative share of people from lowest to highest",ylab="Cumulative share of income earned")
+legend(x=0.05,y=0.95,legend=c("Low","Medium","High","Very High"),lty=1,col=c("black","blue","red","grey"),title="Income Inequality")
+apply(apply(piketty.total[,2:5],2,cumsum),2,gini,x=piketty.total[,1])
+```
